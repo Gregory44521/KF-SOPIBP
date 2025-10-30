@@ -95,13 +95,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const workbook = XLSX.read(buffer, { type: 'array' });
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
-      data = XLSX.utils.sheet_to_json(sheet).map(item => ({
-      KF: item.KF,
-      descEN: item['Desc EN'] || '',
-      descFR: item['Desc FR'] || ''
-      }));
-
-      console.log(data);
+      data = XLSX.utils.sheet_to_json(sheet);
       fillDropdown(data);
       console.log('✅ Fichier Excel chargé automatiquement.');
     })
@@ -112,7 +106,3 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
-
-
-

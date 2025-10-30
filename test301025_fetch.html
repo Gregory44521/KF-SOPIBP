@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+ <html lang="fr"> <head> <meta charset="utf-8"/> <title>Affichage des descriptions KF</title> <style> body { font-family: "Segoe UI", Arial, sans-serif; margin: 40px; background-color: #f4f6f8; color: #333; }
+h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+#container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.desc-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.desc-box {
+  background: #f9fafc;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 150px;
+  transition: all 0.3s ease;
+}
+
+.desc-box:hover {
+  background: #eef2f7;
+}
+
+.desc-box h3 {
+  margin-top: 0;
+  color: #1a5276;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.desc-text {
+  margin-top: 10px;
+  white-space: pre-wrap;
+}
+
+footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+</style> </head> <body> <div id="container"> <h1>Affichage des descriptions par KF</h1>
+<label for="kfSearch">Rechercher une KF :</label>
+<input id="kfSearch" placeholder="Tapez pour filtrer les KF..." type="text"/>
+<label for="kfSelect">Sélectionnez une KF :</label>
+<select id="kfSelect">
+<option value="">-- Choisissez une KF --</option>
+</select>
+<div class="desc-container">
+<div class="desc-box">
+<h3>Description EN</h3>
+<div class="desc-text" id="descEN"></div>
+</div>
+<div class="desc-box">
+<h3>Description FR</h3>
+<div class="desc-text" id="descFR"></div>
+</div>
+</div>
+</div> <footer>© 2025 - Gregory Troalen</footer> <script> // Données intégrées
+const data = [ { KF: 'Baseline Fcst_S', descEN: 'Usual sales forecast', descFR: 'baseline forecast issued from IBP without any additional elements' }, { KF: 'Cons. Landing fcst vs Sales Bud. %', descEN: 'current year consensus / budget commercial', descFR: 'calculation of growth % vs sales budget by comparing Consensus current Year and sales budget' }, { KF: 'Delivered Qty N_S', descEN: 'Histo des quantités livrées', descFR: 'Volume actually delivered to our customer in current year' }, { KF: 'Delivered Qty N-1', descEN: 'Historique des quantités livrées N-1', descFR: 'Volume actually delivered to our customer in year-1' }, { KF: 'Delivered Qty N-2', descEN: 'Historique des quantités livrées N-2', descFR: 'Volume actually delivered to our customer in year-2' }, { KF: 'DR Fcst', descEN: 'prévision finale issue du cycle de DR', descFR: 'Output of the Demand Review Process that will be used as demand input for the supply review process. This forecast will be snapshoted for accuracy calculations. This key figure will be no more editable for the rest of the running S&OP cycle once DR is completed' }, { KF: 'DR Fcst - Adj %', descEN: '', descFR: '% entered manually (only possible for the months to come) that will be added / deducted from the DR Fcst In-prep quantity (Fcst MTC + high Risks & Opps) at the level you have entered your volume' }, { KF: 'DR Fcst - Adj Qty', descEN: '', descFR: 'Volume entered manually (only possible for the months to come) that will overrides the DR Fcst In-prep quantity at the level you have entered your volume' } ];
+
+const select = document.getElementById('kfSelect'); const search = document.getElementById('kfSearch'); 
+// Fonction pour remplir la liste déroulante 
+function fillDropdown(list) { select.innerHTML = '<option value="">-- Choisissez une KF --</option>'; list.forEach(item => { const opt = document.createElement('option'); opt.value = item.KF; opt.textContent = item.KF; select.appendChild(opt); }); } 
+// Remplissage initial fillDropdown(data); // Recherche dynamique
+search.addEventListener('input', () => { const query = search.value.toLowerCase(); const filtered = data.filter(d => d.KF.toLowerCase().includes(query)); fillDropdown(filtered); document.getElementById('descEN').textContent = ''; document.getElementById('descFR').textContent = ''; }); // Affichage des descriptions
+select.addEventListener('change', () => { const chosen = data.find(d => d.KF === select.value); document.getElementById('descEN').textContent = chosen ? chosen.descEN : ''; document.getElementById('descFR').textContent = chosen ? chosen.descFR : ''; }); 
+</script>
+<script>
+async function loadCSV(url) {
+  const response = await fetch(url);
+  const text = await response.text();
+  const rows = text.trim().split('
+').map(row => row.split(';'));
+  const headers = rows[0];
+  const data = rows.slice(1).map(row => {
+    let obj = {};
+    headers.forEach((header, i) => {
+      obj[header.trim()] = row[i] ? row[i].trim() : '';
+    });
+    return obj;
+  });
+  return data;
+}
+
+window.onload = async function() {
+  const csvUrl = 'Glossaire%20KF%20IBP.csv';
+  const data = await loadCSV(csvUrl);
+
+  const select = document.querySelector('select');
+  const descEN = document.getElementById('descEN');
+  const descFR = document.getElementById('descFR');
+
+  data.forEach(item => {
+    const kf = item['To be rename'] || '';
+    if (kf) {
+      const option = document.createElement('option');
+      option.value = kf;
+      option.textContent = kf;
+      select.appendChild(option);
+    }
+  });
+
+  select.addEventListener('change', function() {
+    const selectedKF = this.value;
+    const entry = data.find(d => d['To be rename'] === selectedKF);
+    if (entry) {
+      descEN.textContent = entry['Detailed explanation of the KF (EN)'] || 'EN: non disponible';
+      descFR.textContent = entry['Explication detaillée de la KF (FR)'] || 'FR: non disponible';
+    }
+  });
+};
+</script></body>
+</html>

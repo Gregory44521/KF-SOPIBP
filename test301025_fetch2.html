@@ -104,7 +104,7 @@ fileInput.addEventListener('change', (e) => {
 
 // 🚀 Chargement automatique du fichier donnees.xlsx
 window.addEventListener('DOMContentLoaded', () => {
-  fetch('donnees.xlsx')
+  fetch('https://raw.githubusercontent.com/Gregory44521/KF-SOPIBP/main/GlossaireKFIBP.xlsx')
     .then(response => {
       if (!response.ok) throw new Error('Fichier Excel introuvable.');
       return response.arrayBuffer();
@@ -124,3 +124,4 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+

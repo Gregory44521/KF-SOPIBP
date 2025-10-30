@@ -122,7 +122,7 @@ async function loadCSV(url) {
 }
 
 window.onload = async function() {
-  const csvUrl = 'Glossaire%20KF%20IBP.csv';
+  const csvUrl = 'https://raw.githubusercontent.com/<Gregory44521>/<KF-SOPIBP>/main/Glossaire%20KF%20IBP.csv';
   const data = await loadCSV(csvUrl);
 
   const select = document.querySelector('select');

@@ -80,8 +80,8 @@ search.addEventListener('input', () => {
 // Affichage des descriptions
 select.addEventListener('change', () => {
   const chosen = data.find(d => d.KF === select.value);
-  document.getElementById('descEN').textContent = chosen ? chosen.descEN : '';
-  document.getElementById('descFR').textContent = chosen ? chosen.descFR : '';
+  document.getElementById('descEN').textContent = chosen ? chosen['Desc EN'] || '' : '';
+  document.getElementById('descFR').textContent = chosen ? chosen['Desc FR'] || '' : '';
 });
 
 // 🚀 Chargement automatique du fichier Excel
@@ -107,4 +107,5 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
 

@@ -81,8 +81,8 @@ search.addEventListener('input', () => {
 select.addEventListener('change', () => {
   const chosen = data.find(d => d.KF === select.value);
   console.log('Choisi:', chosen); // ✅ Debug
-  document.getElementById('descEN').textContent = chosen ? chosen.descEN : '';
-  document.getElementById('descFR').textContent = chosen ? chosen.descFR : '';
+  document.getElementById('descEN').textContent = chosen ? chosen.DescEN : '';
+  document.getElementById('descFR').textContent = chosen ? chosen.DescFR : '';
 });
 
 // 🚀 Chargement automatique du fichier Excel
@@ -108,5 +108,6 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
+
 
 

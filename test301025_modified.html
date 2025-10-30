@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+ <html lang="fr"> <head> <meta charset="utf-8"/> <title>Affichage des descriptions KF</title> <style> body { font-family: "Segoe UI", Arial, sans-serif; margin: 40px; background-color: #f4f6f8; color: #333; }
+h1 {
+  text-align: center;
+  color: #2c3e50;
+}
+
+#container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+
+.desc-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.desc-box {
+  background: #f9fafc;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  min-height: 150px;
+  transition: all 0.3s ease;
+}
+
+.desc-box:hover {
+  background: #eef2f7;
+}
+
+.desc-box h3 {
+  margin-top: 0;
+  color: #1a5276;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.desc-text {
+  margin-top: 10px;
+  white-space: pre-wrap;
+}
+
+footer {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 0.85rem;
+  color: #888;
+}
+
+</style> </head> <body> <div id="container"> <h1>Affichage des descriptions par KF</h1>
+<label for="kfSearch">Rechercher une KF :</label>
+<input id="kfSearch" placeholder="Tapez pour filtrer les KF..." type="text"/>
+<label for="kfSelect">Sélectionnez une KF :</label>
+<select id="kfSelect">
+<option value="">-- Choisissez une KF --</option>
+</select>
+<div class="desc-container">
+<div class="desc-box">
+<h3>Description EN</h3>
+<div class="desc-text" id="descEN"></div>
+</div>
+<div class="desc-box">
+<h3>Description FR</h3>
+<div class="desc-text" id="descFR"></div>
+</div>
+</div>
+</div> <footer>© 2025 - Gregory Troalen</footer> <script> // Données intégrées
+const data = [ { KF: 'Baseline Fcst_S', descEN: 'Usual sales forecast', descFR: 'baseline forecast issued from IBP without any additional elements' }, { KF: 'Cons. Landing fcst vs Sales Bud. %', descEN: 'current year consensus / budget commercial', descFR: 'calculation of growth % vs sales budget by comparing Consensus current Year and sales budget' }, { KF: 'Delivered Qty N_S', descEN: 'Histo des quantités livrées', descFR: 'Volume actually delivered to our customer in current year' }, { KF: 'Delivered Qty N-1', descEN: 'Historique des quantités livrées N-1', descFR: 'Volume actually delivered to our customer in year-1' }, { KF: 'Delivered Qty N-2', descEN: 'Historique des quantités livrées N-2', descFR: 'Volume actually delivered to our customer in year-2' }, { KF: 'DR Fcst', descEN: 'prévision finale issue du cycle de DR', descFR: 'Output of the Demand Review Process that will be used as demand input for the supply review process. This forecast will be snapshoted for accuracy calculations. This key figure will be no more editable for the rest of the running S&OP cycle once DR is completed' }, { KF: 'DR Fcst - Adj %', descEN: '', descFR: '% entered manually (only possible for the months to come) that will be added / deducted from the DR Fcst In-prep quantity (Fcst MTC + high Risks & Opps) at the level you have entered your volume' }, { KF: 'DR Fcst - Adj Qty', descEN: '', descFR: 'Volume entered manually (only possible for the months to come) that will overrides the DR Fcst In-prep quantity at the level you have entered your volume' } ];
+
+const select = document.getElementById('kfSelect'); const search = document.getElementById('kfSearch'); 
+// Fonction pour remplir la liste déroulante 
+function fillDropdown(list) { select.innerHTML = '<option value="">-- Choisissez une KF --</option>'; list.forEach(item => { const opt = document.createElement('option'); opt.value = item.KF; opt.textContent = item.KF; select.appendChild(opt); }); } 
+// Remplissage initial fillDropdown(data); // Recherche dynamique
+search.addEventListener('input', () => { const query = search.value.toLowerCase(); const filtered = data.filter(d => d.KF.toLowerCase().includes(query)); fillDropdown(filtered); document.getElementById('descEN').textContent = ''; document.getElementById('descFR').textContent = ''; }); // Affichage des descriptions
+select.addEventListener('change', () => { const chosen = data.find(d => d.KF === select.value); document.getElementById('descEN').textContent = chosen ? chosen.descEN : ''; document.getElementById('descFR').textContent = chosen ? chosen.descFR : ''; }); 
+</script>
+<script>const data = [
+{ KF: 'Baseline Fcst_S', DescEN: `baseline forecast issued from IBP without any additional elements`, DescFR: `prévision font de rayon issue d'IBP sans événements additionnels` },
+{ KF: 'Cons. Landing fcst vs Sales Bud. %', DescEN: `calculation of growth % vs sales budget by comparing Consensus current Year and sales budget`, DescFR: `calcul du % de croissance en comparant le Consensus de l'année en cours avec le budget commercial` },
+{ KF: 'Delivered Qty N_S', DescEN: `Volume actually delivered to our customer in current year`, DescFR: `historique quantités livrées sur l'année en cours` },
+{ KF: 'Delivered Qty N-1', DescEN: `Volume actually delivered to our customer in year-1`, DescFR: `historique quantités livrées sur l'année N-1` },
+{ KF: 'Delivered Qty N-2', DescEN: `Volume actually delivered to our customer in year-2`, DescFR: `historique quantités livrées sur l'année N-2` },
+{ KF: 'DR Fcst', DescEN: `Output of the Demand Review Process that will be used as demand input for the supply review process. This forecast will be snapshoted for accuracy calculations. This key figure will be no more editable for the rest of the running S&OP cycle once DR is completed`, DescFR: `Résultat du processus de Demand Review qui servira de donnée d'entrée pour le processus de Supply Review. Cette prévision sera stockée pour permettre des calculs de fiabilité. Cette Key Figure ne sera plus editable en cours de cycle une fois la réunion de DR terminée et validée.` },
+{ KF: 'DR Fcst - Adj %', DescEN: `% entered manually (only possible for the months to come) that will be added / deducted from the DR Fcst In-prep quantity (Fcst MTC + high Risks & Opps) at the level you have entered your volume`, DescFR: `Volume saisi manuellement (uniquement possible pour les mois à venir) qui va venir s'ajouter / se déduire de la prévision DR Fcst au niveau où vous avez saisi votre volume` },
+{ KF: 'DR Fcst - Adj Qty', DescEN: `Volume entered manually (only possible for the months to come) that will overrides the DR Fcst In-prep quantity at the level you have entered your volume`, DescFR: `Volume saisi manuellement (uniquement possible pour les mois à venir) qui va venir écraser la prévision DR Fcst au niveau où vous avez saisi votre volume` },
+{ KF: 'DR Fcst - Snapshot', DescEN: `This KF is to be used in combination with attribute LAG. For each LAG attribute, it will be a picture taken X months before the time and that will be used to calculate accuracy. LAG 1 = -1 month, LAG 2 = -2 months ....`, DescFR: `Cette KF sera utilisée en combinaison avec l'attribut LAG. Pour chaque valeur d'attribut LAG, une photo de la Demand Review forecast sera prise X mois avant et cette photo sera utilisée pour procéder aux calculs de fiabilité. LAG 1 = -1 mois, LAG 2 = -2 mois ....` },
+{ KF: 'DR Fcst ABS gap', DescEN: `Gap in absolute qty between the Demand Review Forecast and the Historical Ordered Quantities`, DescFR: `C'est la différence en écart absolu entre la Prévision Demand Review et l'historique des quantités commandées.` },
+{ KF: 'DR Fcst ACC. %', DescEN: `Calulcates the accuracy of the Demand Review Forecast versus ordered qty history by using ABS gap. The closer to 100%, the better`, DescFR: `calcul de la fiabilité de la prévision Demand Review en la comparant à l'historique des qtés commandées en utilisant l'ABS gap. Plus on se rapproche de 100%, plus c'est juste` },
+{ KF: 'DR Fcst BIAS %', DescEN: `Calulcates the bias of the Demand Review Forecast versus ordered qty history by using BIAS gap. The closer to 0%, the better.
+If above 0%, the DR is too optimistic.
+If under 0%, the DR is too pessimistic`, DescFR: `calcul du biais de la prévision Demand Review en la comparant à l'historique des qtés commandées en utilisant le BIAS gap. Plus on se rapproche de 0%, plus c'est juste.
+Si supérieur à 0%, la DR est trop optimiste
+Si inférieur à 0%, la DR est trop pessimiste` },
+{ KF: 'DR Fcst BIAS gap', DescEN: `Gap in relative qty between the Demand Review Forecast and the Historical Ordered Quantities`, DescFR: `C'est la différence en écart relatif entre la Prévision Demand Review et l'historique des quantités commandées.` },
+{ KF: 'DR Fcst In-Prep', DescEN: `Output of the Pre-Demand Review Process that will be used as input for the Demand Review process. This key figure will be no more editable for the rest of the running S&OP cycle once Pre-DR is completed`, DescFR: `Résultat du processus de Pré-Demand Review qui servira de donnée d'entrée pour le processus de Demand Review. Cette Key Figure ne sera plus editable en cours de cycle une fois la réunion de Pré-DR terminée et validée.` },
+{ KF: 'DR Fcst In-Prep vs Fcst MTC', DescEN: `It calculates the difference between Demand review In-prep Forecast  and forecast months to come, in value and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision Demand review In-prep et la prévision à venir, en valeur à maille mensuelle et au niveau de consultation` },
+{ KF: 'DR Fcst In-Prep vs Fcst MTC %', DescEN: `It calculates the difference between Demand review In-prep Forecast  and forecast months to come, in % and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision Demand review In-prep et la prévision à venir, en % à maille mensuelle et au niveau de consultation` },
+{ KF: 'DR Fcst In-Prep vs Sales Bud.', DescEN: `It calculates the difference between Demand review In-prep Forecast  and Sales Budget, in value and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision Demand review In-prep et le budget commercial, en valeur à maille mensuelle et au niveau de consultation` },
+{ KF: 'DR Fcst In-Prep vs Sales Bud. %', DescEN: `It calculates the difference between Demand review In-prep Forecast  and Sales Budget, in % and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision Demand review In-prep et le budget commercial, en % à maille mensuelle et au niveau de consultation` },
+{ KF: 'DR Fcst vs Fcst MTC %', DescEN: `It calculates the difference between Demand review Forecast  and the Forecast months to come, in % and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision Demand review et la prévision des mois à venir, en % à maille mensuelle et au niveau de consultation` },
+{ KF: 'DR Fcst vs Fcst MTC Qty', DescEN: `It calculates the difference between Demand review Forecast  and the Forecast months to come, in value and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision Demand review et la prévision des mois à venir, en valeur à maille mensuelle et au niveau de consultation` },
+{ KF: 'DR Fcst vs Sales Bud. %', DescEN: `It calculates the difference between Demand review Forecast  and Sales Budget, in % and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision Demand review et le budget commercial, en % à maille mensuelle et au niveau de consultation` },
+{ KF: 'DR Fcst vs Sales Bud. Qty', DescEN: `It calculates the difference between Demand review Forecast  and Sales Budget, in value and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision Demand review et le budget commercial, en valeur à maille mensuelle et au niveau de consultation` },
+{ KF: 'Fcst MTC vs Sales Bud. %', DescEN: `It calculates the difference between Forecast months to come issued from IBP and the Sales Budget, in % and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision opérationnelle issue d'IBP et le budget commercial, en % à maille mensuelle et au niveau de consultation` },
+{ KF: 'Fcst MTC vs Sales Bud. Qty', DescEN: `It calculates the difference between Forecast months to come issued from IBP and the Sales Budget, in value and for each month at the level consulted`, DescFR: `Calcul de l'écart relatif entre la Prévision opérationnelle issue d'IBP et le budget commercial, en valeur à maille mensuelle et au niveau de consultation` },
+{ KF: 'Fcst MTC_S', DescEN: `Total Forecast for the months to come. This is the result of baseline forecast + promotional activity / listings`, DescFR: `Prévision totale sur les mois à venir. C'est la somme des prévisions de fon de rayon + activité promotionnelle/ référencements` },
+{ KF: 'Fcst MTC_S', DescEN: `Total Forecast for the months to come. This is the result of baseline forecast + promotional activity / listings`, DescFR: `Prévision totale sur les mois à venir. C'est la somme des prévisions de fon de rayon + activité promotionnelle/ référencements` },
+{ KF: 'Growth % vs Y-1', DescEN: `calculation of growth % vs N-1 by comparing Consensus current Year and Delivered Quantity of Year -1`, DescFR: `calcul du taux de croissance en % vs N-1 en comparant le Consensus de l'année en cours par rapport aux quantités livrées de l'année N-1.` },
+{ KF: 'High Risks-Opps', DescEN: `It's the sum of High Risks and High Opportunities. Only the High risks and Opps will be used in addition of the forecast months to come to calculate Demand Review Forecast.
+Risks are being treated as negative values for the calculation`, DescFR: `C'est la somme des risques et opportunités élevés. Seuls les risques et opportuntiés élevés sont additionnés à la prévision opérationnelle pour calculer la prévision Demand Review.
+Les risques sont considérés comme négatifs dans la formule.` },
+{ KF: 'High Risks-Opps vs landing Cons. fcst %', DescEN: `Relative to the current year, it is the ratio between High Risk and Opps quantity and the Consensus quantity.`, DescFR: `Sur l'année en cours, il s'agit du ratio entre les Risks and Opps "forts" et le Consensus.` },
+{ KF: 'Landing DR Fcst', DescEN: `To be used only on the fix 12 month horizon. For the current year, it is the consolidated volume with the Delivered Quanity for the past months and the Demand review Forecast for the future. For the currrent months, on prend le DR Fcst du mois M-1`, DescFR: `A utiliser uniquement sur l'horizon fixe de 12 mois. Pour l'année en cours, il s'agit des volumes consolidés entre les volumes livrés pour les mois passés et les prévisions Demand Review sur les mois à venir. Pour le mois en cours, c'est la DR Fcst du mois M-1` },
+{ KF: 'Landing DR Fcst In-Prep', DescEN: `To be used only on the fix 12 month horizon. For the current year, it is the consolidated volume with the Delivered Quanity for the past months and the Demand review In-prep Forecast for the future. For the currrent months, on prend le DR Fcst du mois M-1`, DescFR: `A utiliser uniquement sur l'horizon fixe de 12 mois. Pour l'année en cours, il s'agit des volumes consolidés entre les volumes livrés pour les mois passés et les prévisions Demand Review In-prep sur les mois à venir. Pour le mois en cours, c'est la DR Fcst du mois M-1` },
+{ KF: 'Opp - High Qty', DescEN: `Volumes of Opportunities interfaced from Salesforce and flagged with high probability level of closing`, DescFR: `Volumes d'opportunités interfacés depuis Salesforce et taggés avec un niveau de probabilité élevée` },
+{ KF: 'Opp - Low Qty', DescEN: `Volumes of Opportunities interfaced from Salesforce and flagged with low probability level of closing`, DescFR: `Volumes d'opportunités interfacés depuis Salesforce et taggés avec un niveau de probabilité faible` },
+{ KF: 'Opp - mid Qty', DescEN: `Volumes of Opportunities interfaced from Salesforce and flagged with medium probability level of closing`, DescFR: `Volumes d'opportunités interfacés depuis Salesforce et taggés avec un niveau de probabilité moyen` },
+{ KF: 'Ordered Qty - Snapshot', DescEN: `Key figure used to snapshot the ordered quantity history`, DescFR: `` },
+{ KF: 'Ordered Qty N_S', DescEN: `Volume actually ordered to our customer in current year`, DescFR: `historique quantités commandées sur l'année en cours` },
+{ KF: 'Ordered Qty N-1', DescEN: `Volume actually ordered to our customer in year-1`, DescFR: `historique quantités commandées sur l'année N-1` },
+{ KF: 'Ordered Qty N-2', DescEN: `Volume actually ordered to our customer in year-2`, DescFR: `historique quantités commandées sur l'année N-2` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `S&OP : Opérations promotionnelles - Appli.` },
+{ KF: 'Risk - High Qty', DescEN: `Volumes of risks interfaced from Salesforce and flagged with high probability level of closing`, DescFR: `Volumes de risques interfacés depuis Salesforce et taggés avec un niveau de probabilité élevée` },
+{ KF: 'Risk - Low Qty', DescEN: `Volumes of risks interfaced from Salesforce and flagged with low probability level of closing`, DescFR: `Volumes de risques interfacés depuis Salesforce et taggés avec un niveau de probabilité faible` },
+{ KF: 'Risk - mid Qty', DescEN: `Volumes of risks interfaced from Salesforce and flagged with medium probability level of closing`, DescFR: `Volumes de risques interfacés depuis Salesforce et taggés avec un niveau de probabilité moyen` },
+{ KF: 'Sales volume /work.day', DescEN: `KPI to bring sales volume (in the past or the future) down to working day of the month`, DescFR: `KPI qui permet de ramener un volume de vente mensuel (dans le passé ou le futur) à la maille jour/ouvré` },
+{ KF: 'Total Open order Qty 1st Date_S', DescEN: `volume of current open orders based on the initial expected delivery date from the customer`, DescFR: `volume du carnet de commande sur la base de la date de livraison souhaitée initiale du client` },
+{ KF: 'Total Open Order Qty 1st Date_S', DescEN: `Key figure that is used to display all orders volumes on the initial requested date from the customer`, DescFR: `Key figure qui permet d'afficher la somme des commandes en première date de livraison souhaitée par le client` },
+{ KF: 'Total Open Order Qty Backlog_S', DescEN: `Key figure that is used to sum that volumes of orders of which the initial requested date is in the past. Only valid for MTO items`, DescFR: `Key figure qui est utilisée pour faire la somme des commandes avec date de début initial dans le passé. Uniquemnet valide pour les commandes MTO` },
+{ KF: 'Total Open Order Qty_S', DescEN: `volume of current open orders based on the current delivery date (includes delay of orders)`, DescFR: `volume du carnet de commande sur la base de la date de livraison prévue (inclu le décalage de commande)` },
+{ KF: '', DescEN: ``, DescFR: `` },
+{ KF: 'Delivered Quantities History - Lag', DescEN: `Volume actually delivered to our customer in current year. This KF is to be used in combination with attribute LAG`, DescFR: `Histo des quantités livrées sur l'année. Cette KF sera utilisée en combinaison avec l'attribut LAG` },
+{ KF: 'Demand Review Forecast - Lag Input', DescEN: ``, DescFR: `` },
+{ KF: 'Landing DR Fcst vs Sales Bud', DescEN: `To be used only on a fixed 12-month horizon. For the current year, it refers to the consolidated volumes between the volumes delivered for the past months and the Demand Review forecasts for the coming months, all compared to the sales budget`, DescFR: `A utiliser uniquement sur l'horizon fixe de 12 mois. Pour l'année en cours, il s'agit des volumes consolidés entre les volumes livrés pour les mois passés et les prévisions Demand Review sur les mois à venir, le tout comparé au budget commercial. ` },
+{ KF: 'Landing DR Fcst vs Sales Bud %', DescEN: `To be used only on a fixed 12-month horizon. For the current year, it refers to the consolidated volumes between the volumes delivered for the past months and the Demand Review forecasts for the coming months, all compared to the sales budget and expressed as a percentage.`, DescFR: `A utiliser uniquement sur l'horizon fixe de 12 mois. Pour l'année en cours, il s'agit des volumes consolidés entre les volumes livrés pour les mois passés et les prévisions Demand Review sur les mois à venir, le tout comparé au budget commercial et exprimé en pourcentage` },
+{ KF: 'Landing DR Fcst In-Prep vs Sales Bud.', DescEN: `To be used only on a fixed 12-month horizon. For the current year, it refers to the consolidated volumes between the volumes delivered for the past months and the Demand Review forecasts In Prep for the coming months, all compared to the sales budget`, DescFR: `A utiliser uniquement sur l'horizon fixe de 12 mois. Pour l'année en cours, il s'agit des volumes consolidés entre les volumes livrés pour les mois passés et les prévisions Demand Review In Prep sur les mois à venir, le tout comparé au budget commercial. ` },
+{ KF: 'Landing DR Fcst In-Prep vs Sales Bud. %', DescEN: `To be used only on a fixed 12-month horizon. For the current year, it refers to the consolidated volumes between the volumes delivered for the past months and the Demand Review forecasts In Prep for the coming months, all compared to the sales budget and expressed as a percentage.`, DescFR: `A utiliser uniquement sur l'horizon fixe de 12 mois. Pour l'année en cours, il s'agit des volumes consolidés entre les volumes livrés pour les mois passés et les prévisions Demand Review in Prep sur les mois à venir, le tout comparé au budget commercial et exprimé en pourcentage` },
+{ KF: 'Fcst MTC - open order subsitution', DescEN: `Intermediate KF to be considered by DR Fcst In prep instead of the Forecast MTC. This KF considers, at the monthly level, the maximum between Total Open Order Qty and Forecast MTC`, DescFR: `KF intermédiaire à considérer par DR Fcst In prep en lieu et place et de la prévision. La KF considère au niveau mois le maximum entre Total Open Order Qty et Forecast MTC` },
+{ KF: 'Promotional Activity - MTC', DescEN: `KF at the product/customer level, expressed in volume and disaggregated relative to the Forecast MTC, allowing the entry of promotional volumes.
+It must not be reset by the Demand Review publish.
+It's include in the calculation of the DR Fcst In Prep (as an addition at the final level) `, DescFR: `KF au niveau produit/client, eprimée en Volume et qui se désagrège par rapport au Forecast MTC qui permet la saisie de volumes promotionnels.
+Elle n'est pas être remise à zéro par le publish Demand review. Elle rentre dans le calcul de la DR Fcst In Prep (en addition au niveau fin) 
+` },
+{ KF: 'S&OP : Opérations promotionnelles - Appli.', DescEN: `Quantities produced for promotional operations`, DescFR: `Quantités prévues pour les opérations promotionnelles` },
+{ KF: 'Sales Volume (in prep) / work.day', DescEN: `KPI to bring sales volume (DR Fcst In Prep) down to working day of the month`, DescFR: `KPI qui permet de ramener un volume de demande previsionnel (Demand review Fsct In Prep) à la maille jour/ouvré` },
+{ KF: 'Fcst MTC vs Sales Bud. Qty', DescEN: ``, DescFR: `` },
+{ KF: 'DR Fcst - Adj % - impact', DescEN: `Calculate the percentage gap between the DR Fcst In Prep and the Forecast at the desired aggregation level."`, DescFR: `Calcule l'ecart en pourcentage entre la DR Fcst In Prep et la Prevision au niveau d'agrégation souhaité` },
+{ KF: 'Cons. vs Sales Bud.', DescEN: `It represents the difference in volume between Consensus and Sales Budget`, DescFR: `Ecart relatif en volume entre le Consensus et le budget commercial` },
+{ KF: 'Cons. vs Sales Bud. %', DescEN: `It represents the accuracy of Consensus versus the Sales Budget.  `, DescFR: `Taux d'adhérence du Consensus par rapport au budget commercial. ` },
+{ KF: 'Consensus', DescEN: `It is the consensus quantity resulting from the S&OP process, agreed upon between the Demand Review and the Supply Review. This is the final output of the S&OP cycle, to be compared with the sales budget`, DescFR: `C'est la quantité prévisionnelle qui fait Consensus au terme des processus de Demand et Supply review. C'est le résultat final du cycle S&OP, qui sera à comparer au budget commercial` },
+{ KF: 'Consensus - ABS gap', DescEN: `Monthly absolute deviation between the Consensus and the Delivered Quantities`, DescFR: `Ecart absolu mensuel entre le Consensus et la Quantité Livrée` },
+{ KF: 'Consensus - ACC. %', DescEN: `Calulcates the accuracy of the Consensus versus delivered qty history by using ABS gap. The closer to 100%, the better`, DescFR: `calcul de la fiabilité du consensus en le comparant à l'historique des qtés livrées en utilisant l'ABS gap. Plus on se rapproche de 100%, plus c'est juste` },
+{ KF: 'Consensus - BIAS %', DescEN: `Calulcates the accuracy of the Consensus versus delivered qty history by using ABS gap. The closer to 0%, the better`, DescFR: `calcul de la fiabilité du consensus en le comparant à l'historique des qtés livrées en utilisant l'ABS gap. Plus on se rapproche de 0%, plus c'est juste` },
+{ KF: 'Consensus - BIAS gap', DescEN: `Bias deviation between the Consensus and the Delivered Quantities`, DescFR: `Biais (ecart relatif) entre le Consensus et la Quantité livrée. ` },
+{ KF: 'Consensus - Cust level', DescEN: `It is the consensus quantity resulting from the S&OP process, agreed upon between the Demand Review and the Supply Review. This is the final output of the S&OP cycle, to be compared with the sales budget.
+This KF is rolled back from location level to customer level, in order to be able to compare it with the DR Fcst`, DescFR: `C'est la quantité prévisionnelle qui fait Consensus au terme des processus de Demand et Supply review. C'est le résultat final du cycle S&OP, qui sera à comparer au budget commercial
+Cette KF permet d'agréger au niveau client afin de pouvoir comparer le consensus avec la DR Fcst` },
+{ KF: 'Consensus - Cust level - Snapshot', DescEN: `This KF is to be used in combination with attribute LAG. For each LAG attribute, it will be a picture taken X months before the time and that will be used to calculate accuracy. LAG 1 = -1 month, LAG 2 = -2 months ....`, DescFR: `Cette KF sera utilisée en combinaison avec l'attribut LAG. Pour chaque valeur d'attribut LAG, une photo de la Demand Review forecast sera prise X mois avant et cette photo sera utilisée pour procéder aux calculs de fiabilité. LAG 1 = -1 mois, LAG 2 = -2 mois ....` },
+{ KF: 'Delivered vs Ordered Qty N', DescEN: `It's the difference between the Delivered quantities N and the ordered quantities N for each month`, DescFR: `Ecart relatif entre les quantités livrées N et les quantités commandées N de chaque mois` },
+{ KF: 'Delivered vs Ordered Qty N-1', DescEN: `It's the difference between the Delivered quantities N-1 and the ordered quantities N-1 for each month`, DescFR: `Ecart relatif entre les quantités livrées N-1 et les quantités commandées N-1 de chaque mois` },
+{ KF: 'Delivered vs Ordered Qty N-2', DescEN: `It's the difference between the Delivered quantities N-2 and the ordered quantities N-2 for each month`, DescFR: `Ecart relatif entre les quantités livrées N-2 et les quantités commandées N-2 de chaque mois` },
+{ KF: 'Landing Consensus', DescEN: `For the current year, it is the consolidated volume with the Delivered Quantity for the past and the Consensus for the future and current month`, DescFR: `Sur l'année en cours, il s'agit du volume consolidé des quantités livrées pour le passé et du Consensus pour le futur et mois en cours` },
+{ KF: 'Landing Consensus - Cust level', DescEN: `For the current year, it is the consolidated volume with the Delivered Quantity for the past and the Consensus for the future.
+This KF is rolled back from location level to customer level, in order to be able to compare it with the DR Fcst`, DescFR: `Sur l'année en cours, il s'agit du volume consolidé des quantités livrées pour le passé et du Consensus pour le futur
+Cette KF permet d'agréger au niveau client afin de pouvoir comparer le consensus avec la DR Fcst` },
+{ KF: 'Service Level N % ', DescEN: `Key Performance Indicator representing the service level for year N. It is calculated by dividing the delivered quantities of year N by the ordered quantities of year N for each month. This will be closer to the OTIF measurement than the IF measurement. It can happen that it is greater than 0, due to orders delayed`, DescFR: `Taux de service de l'année N. Il est calculé en divisant la quantité livrée par la quantité commandée de N pour chaque mois. Il se rapprochera plutôt de l'indicateur OTIF que IF. Il peut aussi être supérieur à 100 dans le cas de décalage de commande` },
+{ KF: 'Service Level N-1 % ', DescEN: `Key Performance Indicator representing the service level for year N-1. It is calculated by dividing the delivered quantities of year N-1 by the ordered quantities of year N-1 for each month. This will be closer to the OTIF measurement than the IF measurement. It can happen that it is greater than 0, due to orders delayed`, DescFR: `Taux de service de l'année N-1. Il est calculé en divisant la quantité livrée par la quantité commandée de N-1 pour chaque mois. Il se rapprochera plutôt de l'indicateur OTIF que IF. Il peut aussi être supérieur à 100 dans le cas de décalage de commande` },
+{ KF: 'Service Level N-2 % ', DescEN: `Key Performance Indicator representing the service level for year N-2. It is calculated by dividing the delivered quantities of year N-2 by the ordered quantities of year N-2 for each month. This will be closer to the OTIF measurement than the IF measurement. It can happen that it is greater than 0, due to orders delayed`, DescFR: `Taux de service de l'année N-2. Il est calculé en divisant la quantité livrée par la quantité commandée de N-2 pour chaque mois. Il se rapprochera plutôt de l'indicateur OTIF que IF. Il peut aussi être supérieur à 100 dans le cas de décalage de commande` },
+{ KF: 'Total Location Forecast_S', DescEN: `total location forecast`, DescFR: `quantité totale prévisionnelle sur le site consulté` },
+{ KF: '% usage of opening time', DescEN: `this is the % utilisation of the opening time available for the line`, DescFR: `c'est le % d'utilisation du temps d'ouverture disponible de la ligne` },
+{ KF: 'Additionnal Storage Capacity', DescEN: `KF to be used in order to increase temporarily the storage capacity by x nb of pallet space (80x120)`, DescFR: `KF à utiliser afin d'augmenter de façon temporaire la capacitié de stockage par x nb d'emplacements palettes (équivalent 80x120)
+Elle est calculée en time series à la maille hebdo.` },
+{ KF: 'Available Stock_S', DescEN: `available stock to serve out customers`, DescFR: `stock disponible pour livrer nos clients` },
+{ KF: 'Blocked Stock %', DescEN: `The percentage of blocked stock compared to the total stock per site`, DescFR: `Pourcentage de stock bloqué par site` },
+{ KF: 'Blocked Stock_S', DescEN: `stock that is not available to be sent to our customers`, DescFR: `stock non disponile pour livrer nos clients` },
+{ KF: 'Calendar Working days', DescEN: `Display nbr of working days available based on France IBP Calendar `, DescFR: `` },
+{ KF: 'Capacity Consumption Rate of Production Resource_S', DescEN: ``, DescFR: `` },
+{ KF: 'Capacity Demand of Production Resource_S', DescEN: ``, DescFR: `` },
+{ KF: 'Capacity Demand of Transportation Resource_S', DescEN: ``, DescFR: `` },
+{ KF: 'Capacity Usage of Production Resource_S', DescEN: ``, DescFR: `` },
+{ KF: 'Capacity Usage of Transportation Resource_S', DescEN: ``, DescFR: `` },
+{ KF: 'Component Supply DS_S', DescEN: ``, DescFR: `` },
+{ KF: 'Component Usage_S', DescEN: `usage of the component based on the BOM of the products`, DescFR: `utilisation des composants sur la base de la nomenclature des produits` },
+{ KF: 'Confirmed External Receipts_S', DescEN: `confirmed stock reception from an external source with a firm order`, DescFR: `réception de stock confirmée sur la base d'une commande ferme depuis une source extérieure` },
+{ KF: 'Confirmed Production Receipts_S', DescEN: `confirmed stock reception from a firm production order`, DescFR: `réception de stock confirmée sur la base d'un ordre de fabrication` },
+{ KF: 'Confirmed Stock Reception (Trp. Rcpt.)_S', DescEN: `confirmed stock reception with a firm order`, DescFR: `réception de stock confirmée sur la base d'un ordre de transport ferme` },
+{ KF: 'Consumption ZMP_EMB', DescEN: `consumption of items of type ZMP or ZEMB in the past`, DescFR: `Historique des consommation mensuelles d'articles de type ZMP ou ZEMB ` },
+{ KF: 'Consumption ZMP_EMB - Snapshot', DescEN: `snapshot of planned consumption for ZMP & ZEMB from M1 to M12`, DescFR: `snapshot de la consommation previsionnelle des ZMP et ZEMB de M1 à M12` },
+{ KF: 'Consumption ZMP_EMB Bud', DescEN: `Budget for raw material packaging items`, DescFR: `Budget pour les articles matière première Emballage` },
+{ KF: 'Consumption ZMP_EMB Bud', DescEN: `Budget for raw material packaging items`, DescFR: `Budget pour les articles matière première Emballage` },
+{ KF: 'Consumption ZMP_EMB M-1', DescEN: `consumption of items of type ZMP or ZEMB in the past (M-1)`, DescFR: `` },
+{ KF: 'Consumption ZMP_EMB N-1', DescEN: `consumption of items of type ZMP or ZEMB in the past (Y-1)`, DescFR: `` },
+{ KF: 'Consumption ZMP_EMB N-2', DescEN: `consumption of items of type ZMP or ZEMB in the past (Y-2)`, DescFR: `` },
+{ KF: 'Consumption ZMP_EMB vs Bud', DescEN: `It is the gap in quantity of consumption of volumes of ZMP & ZEMB versus the budgeted volumes of ZMP & ZEMB`, DescFR: `comparatif en quantité entre la consommation réelle des ZMP et ZEMB versus le volume budgétisé des consommation de ZMP et ZEMB` },
+{ KF: 'Consumption ZMP_EMB vs Bud', DescEN: `It is the gap in quantity of consumption of volumes of ZMP & ZEMB versus the budgeted volumes of ZMP & ZEMB`, DescFR: `comparatif en quantité entre la consommation réelle des ZMP et ZEMB versus le volume budgétisé des consommation de ZMP et ZEMB` },
+{ KF: 'Consumption ZMP_EMB vs Bud %', DescEN: `It is the gap in % of consumption of volumes of ZMP & ZEMB versus the budgeted volumes of ZMP & ZEMB`, DescFR: `comparatif en % entre la consommation réelle des ZMP et ZEMB versus le volume budgétisé des consommation de ZMP et ZEMB` },
+{ KF: 'Consumption ZMP_EMB vs Bud %', DescEN: `It is the gap in % of consumption of volumes of ZMP & ZEMB versus the budgeted volumes of ZMP & ZEMB`, DescFR: `comparatif en % entre la consommation réelle des ZMP et ZEMB versus le volume budgétisé des consommation de ZMP et ZEMB` },
+{ KF: 'Consumption ZMP_EMB vs M-1', DescEN: `It represents the Gap in quantity between the quantity consumed of ZMP & ZEMB for the current month versus the quantity consumed of ZMP & ZEMB for the previous month. Only for ZMP and ZEMB articles.`, DescFR: `c'est l'écart en quantité entre la quantité consommée en ZMP & ZEMB sur le mois en cours avec la quantité consommée sur le mois précédent. Concerne seulement les articles de types ZMP et ZEMB.` },
+{ KF: 'Consumption ZMP_EMB vs M-1 %', DescEN: `It represents the Gap in % between the quantity consumed of ZMP & ZEMB for the current month versus the quantity consumed of ZMP & ZEMB for the previous month. Only for ZMP and ZEMB articles.`, DescFR: `c'est l'écart en % entre la quantité consommée en ZMP & ZEMB sur le mois en cours avec la quantité consommée sur le mois précédent. Concerne seulement les articles de types ZMP et ZEMB.` },
+{ KF: 'Consumption ZMP_EMB vs Y-1', DescEN: `It represents the Gap in quantity between the quantity consumed of ZMP & ZEMB for the current month versus the quantity consumed of ZMP & ZEMB for the same month of the previous year. Only for ZMP and ZEMB articles.`, DescFR: `c'est l'écart en quantité entre la quantité consommée en ZMP & ZEMB sur le mois en cours avec la quantité consommée de ZMP & ZEMB sur le même mois de l'année précédente. Concerne seulement les articles de types ZMP et ZEMB.` },
+{ KF: 'Consumption ZMP_EMB vs Y-1 %', DescEN: `It represents the Gap in % between the quantity consumed of ZMP & ZEMB for the current month versus the quantity consumed of ZMP & ZEMB for the same month of the previous year. Only for ZMP and ZEMB articles.`, DescFR: `c'est l'écart en % entre la quantité consommée en ZMP & ZEMB sur le mois en cours avec la quantité consommée de ZMP & ZEMB sur le même mois de l'année précédente. Concerne seulement les articles de types ZMP et ZEMB.` },
+{ KF: 'Consumption ZMP_EMB vs Y-2', DescEN: `It represents the Gap in quantity between the quantity consumed of ZMP & ZEMB for the current month versus the quantity consumed of ZMP & ZEMB for the same month of 2 year prior. Only for ZMP and ZEMB articles.`, DescFR: `c'est l'écart en quantité entre la quantité consommée en ZMP & ZEMB sur le mois en cours avec la quantité consommée de ZMP & ZEMB sur le même mois 2 années plus tôt. Concerne seulement les articles de types ZMP et ZEMB.` },
+{ KF: 'Consumption ZMP_EMB vs Y-2 %', DescEN: `It represents the Gap in %  between the quantity consumed of ZMP & ZEMB for the current month versus the quantity consumed of ZMP & ZEMB for the same month of 2 year prior. Only for ZMP and ZEMB articles.`, DescFR: `c'est l'écart en % entre la quantité consommée en ZMP & ZEMB sur le mois en cours avec la quantité consommée de ZMP & ZEMB sur le même mois 2 années plus tôt. Concerne seulement les articles de types ZMP et ZEMB.` },
+{ KF: 'Coverage Gap_S', DescEN: `gap between the target stock coverage and the dynamic stock coverage`, DescFR: `écart entre la couverture cible définit et la couverture réelle` },
+{ KF: 'Delivered Qty vs Sales Bud.', DescEN: `It is the gap in quantity of delivered volume versus the commercial budget`, DescFR: `c'est le comparatif en volume entre les quantités livrées et le budget commercial` },
+{ KF: 'Delivered Qty vs Sales Bud. %', DescEN: `It is the ratio in % of delivered volume versus the commercial budget`, DescFR: `Indicateur comparant la quantité livrée par rapport au budget commercial en pourcentage` },
+{ KF: 'Downtime - compulsory process downtime (in h)', DescEN: `downtime of the line due to the production process requirement`, DescFR: `temps de production non disponible sur la ligne du fait de contraintes process` },
+{ KF: 'Downtime - line maintenance (in h)', DescEN: `downtime of the line due to planned maintenance`, DescFR: `temps de production non disponible sur la ligne du fait de la maintenance de ligne` },
+{ KF: 'Downtime - production batch switch (in h)', DescEN: `downtime of the line due to switch of production batch on the line`, DescFR: `temps de production non disponible sur la ligne du fait de changement de série` },
+{ KF: 'Downtime - production constraint downtime (in h)', DescEN: `downtime of the line due to end of production constraints on the line`, DescFR: `temps de production non disponible sur la ligne du fait de des contraintes de fin de production` },
+{ KF: 'Downtime - R&D hours (in h)', DescEN: `downtime of the line due to R&D line usage requirement for production trials`, DescFR: `temps de production non disponible sur la ligne du fait de besoin d'essais R&D` },
+{ KF: 'DR Fcst vs Planned prod', DescEN: `it compares the Demand Review forecast with the planned production (only useful for products that are made by BRIDOR in our own plants)`, DescFR: `Comparatif entre la prévision Demand Review et les productions prévues (uniquement valable pour les codes en fabrication sur nos usines)` },
+{ KF: 'Dynamic Stock Coverage - SFS_S', DescEN: `dynamic stock coverage calculated at SFS level`, DescFR: `couverture de stock dynamique au niveau produit semi-fini` },
+{ KF: 'Dynamic Stock Coverage_S', DescEN: `dynamic stock coverage calculated at PF level`, DescFR: `couverture de stock dynamique au niveau produit fini` },
+{ KF: 'Effective Storage capacity', DescEN: `This is the actual available total storage capacity. KF that is the result of the nominal storage capacity reduced with all the "Hold_Space" key figures and increased/reduced with the temp storage capacity key figures`, DescFR: `Cela correspond à la capacité réelle de stockage. Cette KF est le résultat de la capacité de stockage nominale du site à laquelle on vient déduire les KF "Hold_Space" et les KF d'augmentations / réductions temporaire de capacité` },
+{ KF: 'External Receipts_S', DescEN: `stock intake from external sources (subcontracting, negoce)`, DescFR: `réception de stock depuis des sources extérieurs (sous-traitance, négoce)` },
+{ KF: 'Filling rate WH %', DescEN: `this will calculate a filling rate for each warehouse location by comparing the location storage usage (projected stock) with the storage capacity of the same location`, DescFR: `cela va calculer le taux de remplissage de chaque entrepôt en comparant l'utilisation faite (stock projeté) avec la capacité totale de stockage` },
+{ KF: 'Hold_Space : maintenance / breakdown', DescEN: `KF to indicate the nb of pallets space (80x120) that can't be used in order to block storage space (80x120) due to maintenance / break down requirements`, DescFR: `KF indiquant le nb d'emplacements, en équivalent palettes 80x120, qui sont immobilisés pour des opérations de maintenance ou panne.  Cette KF vient en déduction de l'espace de stockage nominal pour calculer la capacité de stockage.
+Elle est calculée en time series à la maille hebdo.` },
+{ KF: 'Hold_Space : RD and Quality storage', DescEN: `KF to indicate the nb of pallets space (80x120) that can't be used in order to reduce storage capacity in order to keep aside some empty space (80x120) in order to store R&D and quality samples and other type of products`, DescFR: `KF indiquant le nb d'emplacements, en équivalent palettes 80x120, qui sont utilisés par les palettes R&D et qualité (échantillons, autres types de produits).  Cette KF vient en déduction de l'espace de stockage nominal pour calculer la capacité de stockage.
+` },
+{ KF: 'Hold_Space : slave pallet 100x120', DescEN: `KF to be used to indicate the nb of pallets space (80x120) that can't be used in order to reduce storage capacity due to usage of slave pallet (100x120) when the the actual pallet quality is not good enough for the storage automation`, DescFR: `KF indiquant le nb d'emplacements, en équivalent palettes 80x120, qui sont utilisés par les palettes 100x120.  Cette KF vient en déduction de l'espace de stockage nominal pour calculer la capacité de stockage.
+` },
+{ KF: 'Hold_Space : spare running capacity', DescEN: `KF to indicate the nb of pallets space (80x120) that can't be used in order to reduce storage capacity in order to keep aside some empty space (80x120) in order to guarantee optimal running functionnality. `, DescFR: `KF indiquant le nb d'emplacements, en équivalent palettes 80x120, qui ne peuvent être utilisés pour le bon fonctionnement de l'espace de stockage. Cette KF vient en déduction de l'espace de stockage nominal pour calculer la capacité de stockage.
+` },
+{ KF: 'Hourly Tonnage/Line', DescEN: `Key Figure expressing the average hourly tonnage per production line. Manual entry, periodically reviewed according to product mix.`, DescFR: `Key Figure qui exprime le tonnage horaire moyen par ligne de production. Saisie manuelle, révision périodique selon mix produit. ` },
+{ KF: 'Inventory Correction_S', DescEN: `inventory correction, manual input`, DescFR: `correction d'inventaire, saisie manuelle` },
+{ KF: 'Inventory Target_S', DescEN: `inventory target, used to simulate our safety stock`, DescFR: `stock cible, utilisé poour modéliser nos stocks de sécurité` },
+{ KF: 'Location Sourcing Ratio_S', DescEN: `ratio that allow to source from the location or not`, DescFR: `ratio permettant d'autoriser ou non l'approvisionnement depuis le site concerné ou non` },
+{ KF: 'Missing line capacity (in T)', DescEN: `It is the missing capacity per line expressed in equivalent metric tons. The calculation takes into account the average hourly tonnage of the line (Tonnage Hour Line)`, DescFR: `C'est la capacité manquante par ligne exprimée et equivalent Tonne. Le calcule prend en compte le tonnage horaire moyen de la ligne (Tonnage Hour line)` },
+{ KF: 'nb of production end constraints max', DescEN: `max nb of end of production constraints on the line`, DescFR: `nb max de familles à contraintes de fin de production sur la ligne` },
+{ KF: 'Net Supply Requirement_S', DescEN: ``, DescFR: `` },
+{ KF: 'Non-Delivery Cost Rate for Customer Demand_S', DescEN: `non delivery cost rate to be taken into account by IBP in order to run the R&S model`, DescFR: `coût de non livraison pris en compte par IBP pour le fonctionnement du modèle R&S` },
+{ KF: 'Number of Subperiods_S', DescEN: `number of subperiod that we want to materialize in 1 week`, DescFR: `nombre de sous-période pour faire 1 semaine` },
+{ KF: 'Opening Hours Bias % H_S', DescEN: `KF to be used to decrease total opening hours of the production line from X % of hours due to production BIAS factor
+you must run the Heuristic calculation after amending this KF in order to align all output data from heuristic`, DescFR: `KF à utiliser pour venir réduire le temps d'ouverture total de la ligne de production de X % d'heures du fait des biais de production
+il faut faire tourner un heuristic après modification de cette KF pour aligner les données de sorties de l'heuristique` },
+{ KF: 'Opening time - actual usage (in h)', DescEN: `actual production time requirement on the line. If capacity demand of production resource is less than total available hours with bias, then actual usage is equal to capacity demand of production, otherwise, actual usage = total available opening time with Bias. `, DescFR: `temps de production réellement utilisé sur la ligne. SI la capacity demand of prodcution est inférieure au temps d'ouverture total incluant le biais, alors l'actual usage est égal au besoin de production réel. Sinon, actual usage = total available opening time with bias` },
+{ KF: 'Opening time - bank holidays (in h)', DescEN: `extra oppening time of the line due on bank holidays`, DescFR: `temps d'ouverture additionnel grâce aux ouvertures sur jour fériés` },
+{ KF: 'Opening time - Gap Demand vs Supply (in h)', DescEN: `Gap between the unconstrained demand required opening time and the actual opening time consumed on the line`, DescFR: `écart entre le nb d'heures de production requise sur base demande non-contrainte vs le nb d'heures actuelles d'ouverture consommées` },
+{ KF: 'Opening time - max capacity (in h)', DescEN: `maximum opening capacity per production line`, DescFR: `capacité d'ouverture maximale par ligne de production` },
+{ KF: 'Opening time - max capacity (in T)', DescEN: `maximum opening capacity per production line x hourly tonnage per line`, DescFR: `capacité d'ouverture maximale par ligne de production x tonnage horaire par ligne` },
+{ KF: 'Opening time - Missing line capacity (in h)', DescEN: `missing production time on the line`, DescFR: `temps de production manquant sur la ligne` },
+{ KF: 'Opening time - overtime hours (in h)', DescEN: `extra oppening time of the line due planned overtime`, DescFR: `temps d'ouverture additionnel grâce aux ouvertures d'heures supplémentaires` },
+{ KF: 'Opening time - Remaining line capacity (in h)', DescEN: `remaining available production time on the line`, DescFR: `temps de production restant disponible sur la ligne` },
+{ KF: 'Opening time - simulation (in h)', DescEN: `Key Figure representing potential opening hours related to line opening projects. It must be available for each and every line and it can be either a positive or a negative value depending if we want to add or reduce the opening time`, DescFR: `KF permettant de modéliser une ouverture de ligne. Doit permettre de simuler des augmentations ou des réductions d'heure sur la ligne en utilisant soit des nombres positifs ou négatifs` },
+{ KF: 'Opening time - total available (in h)', DescEN: `total opening time in hours on the line`, DescFR: `temps d'ouverture disponible total de la ligne` },
+{ KF: 'Opening time - total available with Biais (in h)', DescEN: `this is the final total available opening time, including Bias, that will be used as input for heuristic calculation`, DescFR: `c'est le temps d'ouverture final, incluant les heures de biais, qui sera utilisé en donné d'input de l'heuristique` },
+{ KF: 'Opening time - week (in h)', DescEN: `opening time during normal weekdays`, DescFR: `temps d'ouverture disponible sur les jours ouvrés de la semaine` },
+{ KF: 'Opening time - weekend (in h)', DescEN: `extra opening time thanks to weekend shifts`, DescFR: `temps d'ouverture additionnel grâce aux ouvertures d'heures équipes weekend` },
+{ KF: 'Output Coefficient_S', DescEN: ``, DescFR: `` },
+{ KF: 'Planned consumption ZMP_EMB', DescEN: `Planned consumption of items of type ZMP or ZEMB in the future`, DescFR: `consommations planifiées mensuelles d'artciles de type ZMP ou ZEMB` },
+{ KF: 'Planned total intake', DescEN: `somme des production receipt et des external receipt`, DescFR: `production planifiée depuis le modèle R&S` },
+{ KF: 'Prod_SST Bud', DescEN: `This is the BRIDOR plant production budget`, DescFR: `C'est le budget de production des usines BRIDOR` },
+{ KF: 'Prod_SST Bud vs Planned prod Qty', DescEN: `It compares the production budgeted volumes to the projected planned production volumes`, DescFR: `c'est la comparaison entre le budget de production prévus avec les productions planifiées` },
+{ KF: 'Production /work. Day', DescEN: `KPI to bring production volume (in the past or the future) down to working day of the month`, DescFR: `KPI qui permet de ramener un volume de production mensuel (dans le passé ou le future) à la maille jour/ouvré` },
+{ KF: 'Production Cost Rate_S', DescEN: `production cost rate to be taken into account by IBP in order to run the R&S model`, DescFR: `coût de fabrication pris en compte par IBP pour le fonctionnement du modèle R&S` },
+{ KF: 'Production Incremental Lot Size_S', DescEN: `Production Incremental Lot Size`, DescFR: `taille de lot de production` },
+{ KF: 'Production Lead Time Error CV_S', DescEN: ``, DescFR: `` },
+{ KF: 'Production Lead Time_S', DescEN: `Production Lead Time`, DescFR: `délai de production` },
+{ KF: 'Production Lot Size Periods_S', DescEN: ``, DescFR: `` },
+{ KF: 'Production Minimum Lot Size_S', DescEN: `Production Minimum Lot Size`, DescFR: `batch mini de production` },
+{ KF: 'Production Ratio_S', DescEN: `ratio that allows the production or not`, DescFR: `ratio qui permet d'autoriser la production ou non` },
+{ KF: 'Production Sourcing Ratio_S', DescEN: `ratio in order to split production source between several plants (not used today)`, DescFR: `ratio permettant de partager la source de production entre plusieurs usines (pas utilisé à date)` },
+{ KF: 'Projected Stock_S', DescEN: `Projected Stock`, DescFR: `stock projeté` },
+{ KF: 'Qty produced M vs M-1', DescEN: `It measures the gap between the Quantity Produced of the month with the previous month`, DescFR: `Mesure l'écart entre les quantités produites sur le mois avec les quantités produites du mois précédent` },
+{ KF: 'Qty produced M vs M-1 %', DescEN: `It measures the gap between the Quantity Produced of the month with the previous month in %`, DescFR: `Mesure l'écart entre les quantités produites sur le mois avec les quantités produites du mois précédent en %` },
+{ KF: 'Qty produced M-1', DescEN: `hisorical data of what was produced in Month -1`, DescFR: `données historiques des volumes de production du mois M-1` },
+{ KF: 'Qty produced M-2', DescEN: `hisorical data of what was produced in Month-2`, DescFR: `données historiques des volumes de production du mois M-1` },
+{ KF: 'Qty produced N vs N-1', DescEN: `It measures the gap between the Quantity Produced of the month with the same month of the previous year (N-1 )`, DescFR: `Mesure l'écart entre les quantités produites sur le mois avec les quantités produites du même mois de l'année précédente.` },
+{ KF: 'Qty produced N vs N-1 %', DescEN: `It measures the gap between the Quantity Produced of the month with the same month of the previous year (N-1 ) in %`, DescFR: `Mesure l'écart entre les quantités produites sur le mois avec les quantités produites du même mois de l'année précédente en %` },
+{ KF: 'Qty produced N vs N-2', DescEN: `It measures the gap between the Quantity Produced of the month with the same month of the previous previous year (N-2)`, DescFR: `Mesure l'écart entre les quantités produites sur le mois avec les quantités produites du même mois de l'année il y a 2 ans` },
+{ KF: 'Qty produced N vs N-2 %', DescEN: `It measures the gap between the Quantity Produced of the month with the same month of the previous previous year (N-2) in %`, DescFR: `Mesure l'écart entre les quantités produites sur le mois avec les quantités produites du même mois de l'année il y a 2 ans en %` },
+{ KF: 'Qty produced N-1', DescEN: `hisorical data of what was produced in Year -1`, DescFR: `données historiques des volumes de production de l'année passée. ` },
+{ KF: 'Qty produced N-2', DescEN: `hisorical data of what was produced in Year -2`, DescFR: `données historiques des volumes de production de l'année N-2` },
+{ KF: 'Qty Produced vs Prod_SST Bud. M-1', DescEN: `It represents the gap in quantity between the produced quantity in the current month versus the industrial budget in quantity in the previous month`, DescFR: `Indicateur représentant l'écart en quantité entre la quantité produite et le budget industriel sur le mois précédent` },
+{ KF: 'Qty Produced vs Prod_SST Bud. M-1 %', DescEN: `It represents the ratio in % between the produced quantity in the current month versus the industrial budget quantity in the previous month`, DescFR: `Indicateur représentant l'écart en % entre la quantité produite et le budget industriel sur le mois précédent` },
+{ KF: 'Qty Produced vs Prod_SST Bud. N', DescEN: `It represents the gap between the produced quantity and the quantity forecasted in the industrial budget in quantity`, DescFR: `Indicateur représentant l'écart en quantité entre la quantité produite et la quantité prévue au budget industriel.` },
+{ KF: 'Qty Produced vs Prod_SST Bud. N-1', DescEN: `It represents the gap in quantity between the produced quantity in the current month versus the industrial budget quantity in the previous year for the same month`, DescFR: `Indicateur représentant l'écart en quantité entre la quantité produite et le budget industril de l'année précédente pour le même mois` },
+{ KF: 'Qty Produced vs Prod_SST Bud. N-1 %', DescEN: `It represents the ratio in % between the produced quantity in the current month versus the industrial quantity in the previous year for the same month`, DescFR: `Indicateur représentant l'écart en % entre la quantité produite et le budget industriel de l'année précédente pour le même mois.` },
+{ KF: 'Qty produced_S', DescEN: `historical data of the volumes that were actually produced from the factories, including products that are not released for quality purposes`, DescFR: `données historiques des volumes de production, incluant les potentiels non-conformes` },
+{ KF: 'Reduction Storage Capacity', DescEN: `KF to be used in order to reduce temporarily the storage capacity by x nb of pallet space (80x120)`, DescFR: `KF à utiliser afin de réduire de façon temporaire la capacitié de stockage par x nb d'emplacements palettes (équivalent 80x120)
+Elle est calculée en time series à la maille hebdo.` },
+{ KF: 'Remaining line capacity (in T)', DescEN: `It is the remaining available capacity per line expressed in equivalent metric tons. The calculation takes into account the average hourly tonnage of the line (Tonnage Hour Line)`, DescFR: `C'est la capacité restante par ligne exprimée et equivalent Tonne. Le calcule prend en compte le tonnage horaire moyen de la ligne (Tonnage Hour line)` },
+{ KF: 'Remaining Location Forecast_S', DescEN: `remaining location forecast once deducted existing open orders on the same period bucket`, DescFR: `prévisions restante une fois déduites les commandes ouvertes sur la même période` },
+{ KF: 'Storage Capacity', DescEN: `total storage capacity of the location in nb of 80x120 pallets format`, DescFR: `capacité de stockage totale de l'entrepôt ramené en équivalent 80x120` },
+{ KF: 'Target stock coverage Bridor_S', DescEN: `this is the target stock that BRIDOR is aiming for. This will allow us to understand the cap in nb of days cover between our target stock cover and our actual stock cover`, DescFR: `cela représente le niveau de couverture cible souhaité par BRIDOR. Cet indicateur permettra de mieux comprendre l'écart entre notre couverture cible et la couverture réelle à date` },
+{ KF: 'Target Subperiods of Supply_S', DescEN: ``, DescFR: `` },
+{ KF: 'Total Location Cust. Demand_S', DescEN: `this is taking what ever is the highest between the customer forecast and the actual open orders`, DescFR: `cela prend en compte la valeurs la plus élevées entre les commandes clients et la prévisions clients` },
+{ KF: 'Total Location Demand_S', DescEN: `this us the sum of independent + dependent demand on the location`, DescFR: `c'est la somme de la demande indépendante et dépendante sur la divison` },
+{ KF: 'Transportation Lead Time_S', DescEN: `Transportation Lead Time`, DescFR: `délai de transport` },
+{ KF: 'Transportation Minimum Lot Size_S', DescEN: `Transportation Minimum Lot Size`, DescFR: `taille de lot mini pour le transport` },
+{ KF: 'FB - Independent Demand - Copy', DescEN: ``, DescFR: `` },
+{ KF: 'FB - Independent Demand - Cru', DescEN: ``, DescFR: `` },
+{ KF: 'TECH - Shift FB Demand', DescEN: ``, DescFR: `` },
+{ KF: 'ZKPIDYNAMICCOVERAGEDAY', DescEN: ``, DescFR: `` },
+{ KF: 'FB - Coefficient', DescEN: ``, DescFR: `` },
+{ KF: 'External Receipts Transportation Rounding', DescEN: ``, DescFR: `` },
+{ KF: 'Production Requirements (repacking)', DescEN: ``, DescFR: `` },
+{ KF: 'Target Subperiods of Supply', DescEN: ``, DescFR: `` },
+{ KF: 'Subpr. of Supply with Safety Stk', DescEN: ``, DescFR: `` },
+{ KF: 'TECH - Couverture Dynamique Temporaire', DescEN: ``, DescFR: `` },
+{ KF: 'TECH - Couverture Dynamique Temporaire - SFS', DescEN: ``, DescFR: `` },
+{ KF: 'Demand Review Forecast In Prep VS Production Receipts', DescEN: ``, DescFR: `` },
+{ KF: 'Open Days - Loc Prd lvl', DescEN: ``, DescFR: `Cette KF donne le nbr de jour au niveau de location` },
+{ KF: 'Dynamic Stock Coverage in days 5', DescEN: `dynamic stock coverage calculated at PF level`, DescFR: `couverture de stock dynamique au niveau produit fini, calculée sur la base de 5 jours ouvrés` },
+{ KF: 'Total Entry', DescEN: `Planned stock receipts including Production receipts and External receipts. For past months, historical stock entries are taken into account`, DescFR: `receptions de stock planifiées contenant les Production receipts et les External receipts. Pour les mois passés on prend en compte l'historique des entrées de stock.` },
+{ KF: 'DR Fcst In Prep vs Total Entry', DescEN: `Quantity gap between the DR Forecast in Prep volume and the Total Entry.`, DescFR: `Ecart en quantité entre le volume de DR Forecast in Prep et le Total Entry.` },
+{ KF: 'DR Fcst vs Total Entry', DescEN: `Quantity gap between the DR Forecast volume and the Total Entry.`, DescFR: `Ecart en quantité entre le volume de DR Forecast et le Total Entry.` },
+{ KF: 'Nb of filling trucks', DescEN: `Projected stock in pallets expressed in truck equivalents.
+For pallet 100/120, divide by 26 pallets; for pallet 80/120, divide by 33.`, DescFR: `Stock projeté palette exprimé en equivalent camion. Pour les 100/120 on divise par 26 pallet et pour les 80/120 on divise par 33 ?` },
+{ KF: 'Projected Full Total Entry', DescEN: `This KF It is the total of the KF Total Entry and KF SOP  Remaining Capacity.
+It provides an estimate of future entries in case of resource saturation.`, DescFR: `C'est le total de la KF Total Entry et du SOP - Remaining capacity. Il donne une estimation des entrées futures en cas de saturation des ressources` },
+{ KF: 'DR Fcst In Prep vs Projected Full Total Entry', DescEN: `Gap in quantity between between DR Fcst In Prep and Projected Full total Entry`, DescFR: `Ecart en quantité entre la DR Fcst In prep et la projected full Total entry` },
+{ KF: 'DR Fcst vs Projected Full Total Entry', DescEN: `Gap in quantity between between DR Fcst and Projected Full total Entry`, DescFR: `Ecart en quantité entre la DR Fcst et la projected full Total entry` },
+{ KF: 'SOP - Adjusted Production - RECDT Lines', DescEN: ``, DescFR: `` },
+{ KF: 'SOP - Calculate Remaining Capa', DescEN: `Intermediate KF used for calculation of the KF SOP - calculated Remaining Capa`, DescFR: `KF intermédiaire utilisée dans le calcul de la KF SOP - calculated Remaining Capa` },
+{ KF: 'Consensus S&OP - Cust level - Lag Input', DescEN: ``, DescFR: `` },
+{ KF: 'Nb of Filling Trucks', DescEN: `Estimation of projected stock in truck equivalent. If pallet = 100/120 => divide by 26, otherwise divide by 33.`, DescFR: `Estimation du stock projeté en equivalent camion. si palette = 100/120 => division par 26, sinon division par 33` },
+{ KF: 'ZSOPFULLTOTALENTRYVSLANDDRFCST', DescEN: ``, DescFR: `` },
+{ KF: 'Capacity Demand of Production ResourceS&OP - PCAPADEMAND', DescEN: `Capacity demand of producion resource for S&OP version.`, DescFR: `nombre d'heures actuelles d'ouvertures consommées. ` },
+{ KF: 'DR Fcst_location - Snapshot Input', DescEN: ``, DescFR: `` },
+{ KF: 'Prod_SST Bud. M-1', DescEN: `Production budget for the pas month`, DescFR: `Budget de production pour le mois M-1` },
+{ KF: 'Prod_SST Bud. N-1', DescEN: `Production budget for the past year`, DescFR: `Budget de production pour l'année N-1` },
+{ KF: 'Projected Full Total Entry vs Landing DR Fcst', DescEN: `Gap in quantity between Landing DR Fcst and Projected Full total Entry`, DescFR: `Ecart en quantité entre l elanding DR Fcst et la projected full Total entry` },
+{ KF: 'Prod. Bud vs Proj. Full Total Entry', DescEN: `KF that compares future inputsconsidering resource saturationwith the production budget, with the difference expressed in units`, DescFR: `KF qui compare les entrées futures, en considérant une saturation des ressources, avec le budget de production. Ecart exprimé en quantité.` },
+{ KF: 'SOP - Calculated Remaining Capa', DescEN: `This KF is calculating the output quantities based on the remaining hours and information entered in the master data Resource Product Capacity following the below formula : 
+	 ( ( SOP  Remaining Capacity * SOP : Rem. Capa. (%) ) / 100 ) / SOP : Capa. Cons. Rate It is stored at level technical week/ product /location`, DescFR: `Cette KF calcule la quantité restante en Tonnage basée sur le nb d'heures restantes disponibles sur la resource avec la formule  ((SOP  Remaining Capacity * SOP : Rem. Capa. (%) ) / 100 ) / SOP : Capa. Cons. Rate` },
+{ KF: '% Usage of opening time', DescEN: `Percentage of utilization of a resource. It compares the actual production time requirement on the line to the total available opening time with bias`, DescFR: `C'est le pourcentage final d'utilisationde la resource. Il compare le temps de proudction utilisé sur la ligne (acual usage) avec les heures d'ouverture totales avec prise en compte du biais` },
+{ KF: 'Filling rate WH %_S', DescEN: `this will calculate a filling rate for each warehouse location by comparing the location storage usage (projected stock) with the storage capacity of the same location`, DescFR: `cela va calculer le taux de remplissage de chaque entrepôt en comparant l'utilisation faite (stock projeté) avec la capacité totale de stockage` },
+{ KF: 'SOP - Adjusted Production - RECDT Lines', DescEN: ``, DescFR: `` },
+{ KF: '80x120 Equivalent Projected Stock (PAL)', DescEN: `Projected stock in nb of 80x120 pallets format`, DescFR: `Stock projeté ramené en équivalent palette 80x120` },
+{ KF: 'Storage Capacity_S', DescEN: `total storage capacity of the location in nb of 80x120 pallets format`, DescFR: `capacité de stockage totale de l'entrepôt ramené en équivalent 80x120` },
+{ KF: 'Dependent Demand_S', DescEN: `this is the dependant demand for each location, usually stock to be transfered to another location or semi-finished products to be used in another manufacturing process`, DescFR: `c'est la demande dépendante propre à chaque site de départ, généralement du stock à transférer vers un autre lieu de stockage ou alors des produits semi-finis qui seront utilisés au cours d'un autre process de fabrication` },
+{ KF: 'Independant demand_S', DescEN: `this is the independant demand for each location`, DescFR: `c'est la demande indépendante propre à chaque site de départ` },
+{ KF: 'landing consumption ZMP_EMB', DescEN: `To be used only on the fix 12 month horizon. For the current year, consolidation of consumption data from past & future in one same KF in order to be able to project the landing of the year in total consumption.  For the currrent months, past weeks = consumption qty and current/future weeks = planned consumption`, DescFR: `A utiliser uniquement sur l'horizon fixe de 12 mois. Pour l'année en cours, il s'agit des volumes consolidés entre les volumes de consommation de ZMP e ZEMB sur les mois passés avec les volumes prévus de consommation de ZMP et ZEMB sur les mois à venir. Pour le mois en cours, sur les semaines passées = qtés consommées et pour la semaine en cours/à venir = consommations planifiées` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'pas besoin en affichage', DescEN: ``, DescFR: `` },
+{ KF: 'Product code', DescEN: ``, DescFR: `` },
+{ KF: 'Qty Produced vs Prod_SST Bud. N%', DescEN: `It represents the ratio between the produced quantity and the quantity forecasted in the industrial budget in %`, DescFR: `Indicateur représentant le rapport en % entre la quantité produite et la quantité prévue au budget industriel.` },
+{ KF: 'Sales Bud', DescEN: `This is the sales budget from BRIDOR`, DescFR: `Il s'agit du budget commercial BRIDOR` },
+{ KF: 'Customer Receipts', DescEN: ``, DescFR: `` },
+{ KF: 'PERIODID1', DescEN: ``, DescFR: `` },
+{ KF: 'PERIODID2', DescEN: ``, DescFR: `` },
+{ KF: 'PERIODID3', DescEN: ``, DescFR: `` },
+{ KF: 'PERIODID4', DescEN: ``, DescFR: `` },
+{ KF: 'PERIODID5', DescEN: ``, DescFR: `` },
+{ KF: 'SOP - Remaining Capacity (h)', DescEN: `SOP  Remaining Capacity (h) is holding the hours of remaining capacity . This key figure is stored at the below level : Technical Week/SOP : Product/SOP : Resource`, DescFR: `SOP  Remaining Capacity (h) représente la capacité restante en heures. Elle est stockée au niveau: semaine technique/SOP : Product/SOP : Resource` },
+{ KF: 'S&OP : Total Loc Cust Dmd', DescEN: `KF  for  S&OP which is taking what ever is the highest between the customer forecast and the actual open orders`, DescFR: `KF S&OP qui prend en compte la valeurs la plus élevées entre les commandes clients et la prévisions clients` },
+{ KF: 'Proj. Full Total Entry vs Prod. Bud (%)', DescEN: `KF that calculates the percentage ratio between future inputs (considering resource saturation) and the production budget`, DescFR: `KF qui  calcule le ration en pourcentage entre les entrées futures, ( en considérant une saturation des ressource), avec le budget de production.` }
+];</script><script>
+window.onload = function() {
+  const select = document.createElement('select');
+  select.id = 'kfSelector';
+  data.forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.KF;
+    option.textContent = item.KF;
+    select.appendChild(option);
+  });
+  document.body.appendChild(select);
+
+  const descEN = document.createElement('p');
+  descEN.id = 'descEN';
+  document.body.appendChild(descEN);
+
+  const descFR = document.createElement('p');
+  descFR.id = 'descFR';
+  document.body.appendChild(descFR);
+
+  select.addEventListener('change', function() {
+    const selectedKF = this.value;
+    const entry = data.find(d => d.KF === selectedKF);
+    if (entry) {
+      descEN.textContent = 'EN: ' + entry.DescEN;
+      descFR.textContent = 'FR: ' + entry.DescFR;
+    }
+  });
+};
+</script></body>
+</html>

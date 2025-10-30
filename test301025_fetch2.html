@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Affichage des descriptions KF</title>
 <style>
 body { font-family: "Segoe UI", Arial, sans-serif; margin: 40px; background-color: #f4f6f8; color: #333; }
@@ -20,31 +21,31 @@ footer { text-align: center; margin-top: 40px; font-size: 0.85rem; color: #888; 
 </head>
 <body>
 <div id="container">
-<h1>Affichage des descriptions par KF</h1>
+  <h1>Affichage des descriptions par KF</h1>
 
-<!-- Input pour rechercher KF -->
-<label for="kfSearch">Rechercher une KF :</label>
-<input type="text" id="kfSearch" placeholder="Tapez pour filtrer les KF..." />
+  <!-- Input pour rechercher KF -->
+  <label for="kfSearch">Rechercher une KF :</label>
+  <input type="text" id="kfSearch" placeholder="Tapez pour filtrer les KF..." />
 
-<!-- Sélection de KF -->
-<label for="kfSelect">Sélectionnez une KF :</label>
-<select id="kfSelect">
-  <option value="">-- Choisissez une KF --</option>
-</select>
+  <!-- Sélection de KF -->
+  <label for="kfSelect">Sélectionnez une KF :</label>
+  <select id="kfSelect">
+    <option value="">-- Choisissez une KF --</option>
+  </select>
 
-<!-- Affichage des descriptions -->
-<div class="desc-container">
-  <div class="desc-box">
-    <h3>Description EN</h3>
-    <div id="descEN" class="desc-text"></div>
-  </div>
-  <div class="desc-box">
-    <h3>Description FR</h3>
-    <div id="descFR" class="desc-text"></div>
+  <!-- Affichage des descriptions -->
+  <div class="desc-container">
+    <div class="desc-box">
+      <h3>Description EN</h3>
+      <div id="descEN" class="desc-text"></div>
+    </div>
+    <div class="desc-box">
+      <h3>Description FR</h3>
+      <div id="descFR" class="desc-text"></div>
+    </div>
   </div>
 </div>
 
-</div>
 <footer>© 2025 - Gregory Troalen</footer>
 
 <!-- Librairie SheetJS -->
@@ -53,10 +54,10 @@ footer { text-align: center; margin-top: 40px; font-size: 0.85rem; color: #888; 
 <script>
 const select = document.getElementById('kfSelect');
 const search = document.getElementById('kfSearch');
-const fileInput = document.getElementById('fileInput');
 
-let data = []; // Les données seront remplies depuis Excel
+let data = [];
 
+// Remplit la liste déroulante avec les KF
 function fillDropdown(list) {
   select.innerHTML = '<option value="">-- Choisissez une KF --</option>';
   list.forEach(item => {
@@ -83,22 +84,7 @@ select.addEventListener('change', () => {
   document.getElementById('descFR').textContent = chosen ? chosen.descFR : '';
 });
 
-// Lecture manuelle (optionnelle)
-fileInput.addEventListener('change', (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (evt) => {
-    const workbook = XLSX.read(evt.target.result, { type: 'binary' });
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    data = XLSX.utils.sheet_to_json(sheet);
-    fillDropdown(data);
-  };
-  reader.readAsBinaryString(file);
-});
-
-// 🚀 Chargement automatique du fichier donnees.xlsx
+// 🚀 Chargement automatique du fichier Excel
 window.addEventListener('DOMContentLoaded', () => {
   fetch('https://raw.githubusercontent.com/Gregory44521/KF-SOPIBP/main/GlossaireKIBP.xlsx')
     .then(response => {
@@ -111,16 +97,12 @@ window.addEventListener('DOMContentLoaded', () => {
       const sheet = workbook.Sheets[sheetName];
       data = XLSX.utils.sheet_to_json(sheet);
       fillDropdown(data);
-      console.log('Fichier Excel chargé automatiquement.');
+      console.log('✅ Fichier Excel chargé automatiquement.');
     })
     .catch(err => {
-      console.error('Erreur de chargement automatique :', err);
+      console.error('❌ Erreur de chargement automatique :', err);
     });
 });
 </script>
 </body>
 </html>
-
-
-
-

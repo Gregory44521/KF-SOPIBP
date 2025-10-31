@@ -162,7 +162,7 @@ const kfData = [{"Functional Area": "Demand Review", "KF": "Baseline Fcst_S", "D
 function updateDropdown() {
     const demandChecked = document.getElementById('demandCheckbox').checked;
     const supplyChecked = document.getElementById('supplyCheckbox').checked;
-    const select = document.getElementById('select_kf');
+    const select = document.getElementById('kfSelect');
     const searchInput = document.getElementById('searchInput');
     const descEN = document.getElementById('descEN');
     const descFR = document.getElementById('descFR');
@@ -192,7 +192,7 @@ function updateDropdown() {
 
 window.onload = updateDropdown;
 
-const selectElem = document.getElementById('select_kf');
+const selectElem = document.getElementById('kfSelect');
 if (selectElem) {
     selectElem.addEventListener('change', function() {
         const selected = this.options[this.selectedIndex];

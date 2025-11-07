@@ -84,7 +84,7 @@ input:checked + .slider:before {
 <!-- Sélection de KF -->
 <label for="kfSelect">Sélectionnez une KF / Select a KF :</label>
 <select id="kfSelect">
-<option value="">-- Select a KF --</option>
+<option value="">-- Select a Key Figure --</option>
 </select>
 <!-- Affichage des descriptions -->
 <div class="desc-container">
@@ -109,7 +109,7 @@ let data = [];
 
 // Remplit la liste déroulante avec les KF
 function fillDropdown(list) {
-  select.innerHTML = '<option value="">-- Select a KF --</option>';
+  select.innerHTML = '<option value="">-- Select a Key Figure --</option>';
   list.forEach(item => {
     const opt = document.createElement('option');
     opt.value = item.KF;

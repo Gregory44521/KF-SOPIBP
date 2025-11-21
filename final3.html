@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <html lang="fr">
@@ -102,6 +101,9 @@ input:checked + .slider:before {
 <footer>© 2025 - S&OP </footer>
 <!-- Librairie SheetJS -->
 <script src="./xlsx.full.min.js"></script>
+
+<!-- ✅ AJOUT DU SCRIPT MANQUANT -->
+<script>
 const select = document.getElementById('kfSelect');
 const search = document.getElementById('kfSearch');
 
@@ -156,8 +158,11 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
+
 <script>
-const kfData = [{""}]
+<!-- ✅ CORRECTION : kfData -->
+const kfData = [{}];
+
 function updateDropdown() {
     const demandChecked = document.getElementById('demandCheckbox').checked;
     const supplyChecked = document.getElementById('supplyCheckbox').checked;
@@ -175,9 +180,9 @@ function updateDropdown() {
     if (!demandChecked && !supplyChecked) return;
 
     const filtered = kfData.filter(row => {
-        const area = row["Functional Area"].toLowerCase();
+        const area = row["Functional Area"]?.toLowerCase() || "";
         const matchesToggle = (demandChecked && area.includes("demand")) || (supplyChecked && area.includes("supply"));
-        const matchesSearch = row["KF"].toLowerCase().includes(searchTerm);
+        const matchesSearch = row["KF"]?.toLowerCase().includes(searchTerm);
         return matchesToggle && matchesSearch;
     });
 
@@ -222,5 +227,6 @@ if (selectElem) {
         document.getElementById('descFR').innerText = selected.getAttribute('data-desc-fr') || '';
     });
 }
-</script></body>
+</script>
+</body>
 </html>

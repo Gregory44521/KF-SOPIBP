@@ -149,6 +149,7 @@ window.addEventListener('DOMContentLoaded', () => {
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
       data = XLSX.utils.sheet_to_json(sheet);
+      kfData = data;
       console.log(data);
       fillDropdown(data);
       console.log('✅ Fichier Excel chargé automatiquement.');
@@ -161,7 +162,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <script>
 <!-- ✅ CORRECTION : kfData -->
-const kfData = [{}];
+let kfData = [];
 
 function updateDropdown() {
     const demandChecked = document.getElementById('demandCheckbox').checked;
